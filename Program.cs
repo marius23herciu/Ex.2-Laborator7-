@@ -33,38 +33,14 @@ namespace Ex._2_Laborator7_
 
 
             ClientID client = CreareClient();
+
             Console.WriteLine($"Doriti sa faceti modificari pentru clientul cu ID: {client.GetID()} ?   y/n");
             char raspuns = Console.ReadKey().KeyChar;
             if (raspuns == 'y')
             {
-                Console.WriteLine();
-                ContCurent contCurentModificare = client.GetContCurent();
-                contCurentModificare = MiscariContCurent(contCurentModificare);
-                if (client.GetContEconomii() != null)
-                {
-                    Console.WriteLine($"Doriti sa faceti modificari in contul de economii?");
-                    raspuns = Console.ReadKey().KeyChar;
-                    Console.WriteLine();
-                    if (raspuns == 'y')
-                    {
-                        Economii contEconomiiModificare = client.GetContEconomii();
-                        contEconomiiModificare = MiscariContEconomii(contEconomiiModificare);
-                    }
-                }
-                if (client.GetContInvestitii() != null)
-                {
-                    Console.WriteLine($"Doriti sa faceti modificari in contul de Investitii?");
-                    raspuns = Console.ReadKey().KeyChar;
-                    Console.WriteLine();
-                    if (raspuns == 'y')
-                    {
-                        Investitii contInvestitiiModificare = client.GetContInvestitii();
-                        contInvestitiiModificare = MiscariContInvestitii(contInvestitiiModificare);
-                    }
-                }
+                client = ModificariConturi(client);
             }
             Console.WriteLine();
-
 
             Console.WriteLine($"Doriti sa adaugati un cont de Investitii pentru clientul cu ID-ul {client.GetID()}? y/n");
             raspuns = Console.ReadKey().KeyChar;
@@ -81,6 +57,71 @@ namespace Ex._2_Laborator7_
             {
                 client = AdaugareContEconomii(client);
             }
+        }
+
+        public static ClientID ModificariConturi(ClientID client)
+        {
+            char raspuns;
+            Console.WriteLine();
+            ContCurent contCurentModificare = client.GetContCurent();
+            contCurentModificare = MiscariContCurent(contCurentModificare);
+            if (client.GetContEconomii() == null && client.GetContInvestitii() == null)
+            {
+                client = new ClientID(client.GetID(), contCurentModificare);
+            }
+            if (client.GetContEconomii() == null && client.GetContInvestitii() != null)
+            {
+                client = new ClientID(client.GetID(), contCurentModificare, client.GetContInvestitii());
+            }
+            if (client.GetContInvestitii() == null && client.GetContEconomii() != null)
+            {
+                client = new ClientID(client.GetID(), contCurentModificare, client.GetContEconomii());
+            }
+
+
+            if (client.GetContEconomii() != null)
+            {
+                Console.WriteLine($"Doriti sa faceti modificari in contul de economii?");
+                raspuns = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+                if (raspuns == 'y')
+                {
+                    Economii contEconomiiModificare = client.GetContEconomii();
+                    contEconomiiModificare = MiscariContEconomii(contEconomiiModificare);
+
+                    if (client.GetContInvestitii() != null)
+                    {
+                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare);
+                    }
+                    if (client.GetContInvestitii() == null)
+                    {
+                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare, client.GetContInvestitii());
+                    }
+                }
+            }
+
+
+            if (client.GetContInvestitii() != null)
+            {
+                Console.WriteLine($"Doriti sa faceti modificari in contul de Investitii?");
+                raspuns = Console.ReadKey().KeyChar;
+                Console.WriteLine();
+                if (raspuns == 'y')
+                {
+                    Investitii contInvestitiiModificare = client.GetContInvestitii();
+                    contInvestitiiModificare = MiscariContInvestitii(contInvestitiiModificare);
+
+                    if (client.GetContEconomii() != null)
+                    {
+                        client = new ClientID(client.GetID(), client.GetContCurent(), client.GetContEconomii(), contInvestitiiModificare);
+                    }
+                    if (client.GetContEconomii() == null)
+                    {
+                        client = new ClientID(client.GetID(), client.GetContCurent(), contInvestitiiModificare);
+                    }
+                }
+            }
+            return client;
         }
 
         public static ClientID CreareClient()
