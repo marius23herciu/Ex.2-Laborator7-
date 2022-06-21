@@ -31,6 +31,7 @@ namespace Ex._2_Laborator7_
             specifica dacă termenul de extragere a fost sau nu atins. 
              */
 
+
             ClientID client = CreareClient();
             Console.WriteLine($"Doriti sa faceti modificari pentru clientul cu ID: {client.GetID()} ?   y/n");
             char raspuns = Console.ReadKey().KeyChar;
@@ -39,8 +40,7 @@ namespace Ex._2_Laborator7_
                 Console.WriteLine();
                 ContCurent contCurentModificare = client.GetContCurent();
                 contCurentModificare = MiscariContCurent(contCurentModificare);
-
-                if (client.GetNumarConturi() >= 2)
+                if (client.GetContEconomii() != null)
                 {
                     Console.WriteLine($"Doriti sa faceti modificari in contul de economii?");
                     raspuns = Console.ReadKey().KeyChar;
@@ -51,7 +51,7 @@ namespace Ex._2_Laborator7_
                         contEconomiiModificare = MiscariContEconomii(contEconomiiModificare);
                     }
                 }
-                if (client.GetNumarConturi() == 3)
+                if (client.GetContInvestitii() != null)
                 {
                     Console.WriteLine($"Doriti sa faceti modificari in contul de Investitii?");
                     raspuns = Console.ReadKey().KeyChar;
@@ -62,6 +62,24 @@ namespace Ex._2_Laborator7_
                         contInvestitiiModificare = MiscariContInvestitii(contInvestitiiModificare);
                     }
                 }
+            }
+            Console.WriteLine();
+
+
+            Console.WriteLine($"Doriti sa adaugati un cont de Investitii pentru clientul cu ID-ul {client.GetID()}? y/n");
+            raspuns = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if (raspuns == 'y')
+            {
+                client = AdaugareContInvestitii(client);
+            }
+
+            Console.WriteLine($"Doriti sa adaugati un cont de Economii pentru clientul cu ID-ul {client.GetID()}? y/n");
+            raspuns = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if (raspuns == 'y')
+            {
+                client = AdaugareContEconomii(client);
             }
         }
 
@@ -75,7 +93,6 @@ namespace Ex._2_Laborator7_
             int valoareMonetaraCurent = int.Parse(Console.ReadLine());
             ContCurent contCurent = new ContCurent(numarContCurent, valoareMonetaraCurent);
             ClientID client = new ClientID(ID, contCurent);
-            //Poate poti separa adugarea conturilor economii si investitii in functii diferite
             Console.WriteLine("Doriti sa adaugati un cont de economii? y/n");
             char raspuns = Console.ReadKey().KeyChar;
             Console.WriteLine();
@@ -84,30 +101,14 @@ namespace Ex._2_Laborator7_
             Economii contEconomii = new Economii(numarContEconomii, valoareMonetaraEconomii);
             if (raspuns == 'y')
             {
-                Console.WriteLine("Introduceti numarul contului de economii al clientului");
-                numarContEconomii = Console.ReadLine();
-                Console.WriteLine("Introduceti suma din contul de economii al clientului");
-                valoareMonetaraEconomii = int.Parse(Console.ReadLine());
-                contEconomii = new Economii(numarContEconomii, valoareMonetaraEconomii);
-                client = new ClientID(ID, contCurent, contEconomii);
-            }
-            if (raspuns != 'y')
-            {
-                return client;
+                client = AdaugareContEconomii(client);
             }
             Console.WriteLine("Doriti sa adaugati un cont de investitii? y/n");
             raspuns = Console.ReadKey().KeyChar;
             Console.WriteLine();
             if (raspuns == 'y')
             {
-                Console.WriteLine("Introduceti numarul contului de investitii al clientului");
-                string numarContInvestitii = Console.ReadLine();
-                Console.WriteLine("Introduceti suma din contul de investitii al clientului");
-                int valoareMonetaraInvestitii = int.Parse(Console.ReadLine());
-                Console.WriteLine("Introduceti data in care veti putea sa faceti retragere in format zz/LL/aaaa");
-                string dataRetragere = Console.ReadLine();
-                Investitii contInvestitii = new Investitii(numarContInvestitii, valoareMonetaraInvestitii, dataRetragere);
-                client = new ClientID(ID, contCurent, contEconomii, contInvestitii);
+                client = AdaugareContInvestitii(client);
             }
             return client;
         }
@@ -117,18 +118,15 @@ namespace Ex._2_Laborator7_
             contCurent.Afisare();
             Console.WriteLine("Doriti sa adaugati bani in contul curent? y/n ");
             char raspuns = Console.ReadKey().KeyChar;
-            //poate separi aduagarea si retragerea in 2 funtii: AdaugareContCurent si RetragereContCurent
             Console.WriteLine();
             if (raspuns == 'y')
             {
                 Console.WriteLine("Introduceti suma pe care o adaugati: ");
-                int plus = int.Parse(Console.ReadLine());
-                contCurent.SetValoareMonetara(plus);
+                contCurent.DepunereContCurent();
             }
             else
             {
                 Console.WriteLine("Doriti sa retrageti bani in contul curent? y/n ");
-
                 raspuns = Console.ReadKey().KeyChar;
                 if (raspuns == 'y')
                 {
@@ -136,16 +134,7 @@ namespace Ex._2_Laborator7_
                     Console.Write($"Puteti retrage maxim ");
                     Console.WriteLine(contCurent.GetSoldCurent());
                     Console.WriteLine("Introduceti suma pe care o retrageti: ");
-                    int minus = int.Parse(Console.ReadLine());
-                    double sold = contCurent.GetSoldCurent();
-                    if (sold >= minus)
-                    {
-                        contCurent.SetValoareMonetara(-minus);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Fonduri insuficiente!");
-                    }
+                    contCurent.RetragereContCurent();
                 }
                 else
                 {
@@ -162,19 +151,15 @@ namespace Ex._2_Laborator7_
             contEconomii.Afisare();
             Console.WriteLine("Doriti sa adaugati bani in contul de economii ? y/n ");
             char raspuns = Console.ReadKey().KeyChar;
-            //poate separi aduagarea si retragerea in 2 funtii: AdaugareContCurent si RetragereContCurent
             Console.WriteLine();
             if (raspuns == 'y')
             {
                 Console.WriteLine("Introduceti suma pe care o adaugati: ");
-                int plus = int.Parse(Console.ReadLine());
-                contEconomii.SetValoareMonetara(plus);
-                Console.WriteLine($"Noua dobanda este {contEconomii.GetDobanda()}.");
+                contEconomii.DepunereValoareMonetara();
             }
             else
             {
                 Console.WriteLine("Doriti sa retrageti bani in contul de economii? y/n ");
-
                 raspuns = Console.ReadKey().KeyChar;
                 if (raspuns == 'y')
                 {
@@ -182,23 +167,10 @@ namespace Ex._2_Laborator7_
                     Console.Write($"Puteti retrage maxim ");
                     Console.WriteLine(contEconomii.GetSoldEconomii());
                     Console.WriteLine("Introduceti suma pe care doriti sa o retrageti: ");
-                    int minus = int.Parse(Console.ReadLine());
-                    double sold = contEconomii.GetSoldEconomii();
-                    if (sold >= minus)
-                    {
-                        contEconomii.SetValoareMonetara(-minus);
-                        Console.WriteLine($"Noua dobanda este {contEconomii.GetDobanda()}.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Fonduri insuficiente!");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine();
+                    contEconomii.RetragererValoareMonetara();
                 }
             }
+            Console.WriteLine();
             Console.WriteLine("Valoarea actuala a contului de economii: ");
             contEconomii.Afisare();
             return contEconomii;
@@ -210,57 +182,99 @@ namespace Ex._2_Laborator7_
             contInvestitii.Afisare();
             Console.WriteLine("Doriti sa adaugati bani in contul de investitii ? y/n ");
             char raspuns = Console.ReadKey().KeyChar;
-            //poate separi aduagarea si retragerea in 2 funtii: AdaugareContCurent si RetragereContCurent
             Console.WriteLine();
             if (raspuns == 'y')
             {
                 Console.WriteLine("Introduceti suma pe care o adaugati: ");
-                int plus = int.Parse(Console.ReadLine());
-                contInvestitii.SetValoareMonetara(plus);
-                Console.WriteLine($"Noua dobanda este {contInvestitii.GetDobanda()}.");
+                contInvestitii.DepunereValoareMonetara();
             }
             else
             {
                 Console.WriteLine("Doriti sa retrageti bani in contul de Investitii? y/n ");
-
                 raspuns = Console.ReadKey().KeyChar;
                 if (raspuns == 'y')
                 {
-                    string data = contInvestitii.GetDataRetragere();
-                    DateTime dataRetragere = DateTime.ParseExact(data, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                    if (dataRetragere < DateTime.Today)
+                    if (contInvestitii.CheckDataRetragere() == true)
                     {
                         Console.WriteLine();
                         Console.Write($"Puteti retrage maxim ");
                         Console.WriteLine(contInvestitii.GetSoldInvestitii());
                         Console.WriteLine("Introduceti suma pe care doriti sa o retrageti: ");
-                        int minus = int.Parse(Console.ReadLine());
-                        double sold = contInvestitii.GetSoldInvestitii();
-                        if (sold >= minus)
-                        {
-                            contInvestitii.SetValoareMonetara(-minus);
-                            Console.WriteLine($"Noua dobanda este {contInvestitii.GetDobanda()}.");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Fonduri insuficiente!");
-                        }
+                        contInvestitii.RetragererValoareMonetara();
                     }
                     else
                     {
                         Console.WriteLine();
-                        Console.WriteLine($"Veti putea retrage bani din contul de investitii dupa data de {data}");
+                        Console.WriteLine($"Veti putea retrage bani din contul de investitii incepand cu data de {contInvestitii.GetDataRetragere()}");
                         Console.WriteLine($"Dobanda este {contInvestitii.GetDobanda()}.");
                     }
                 }
-                else
-                {
-                    Console.WriteLine();
-                }
             }
+            Console.WriteLine();
             Console.WriteLine("Valoarea actuala a contului de Investitii: ");
             contInvestitii.Afisare();
             return contInvestitii;
+        }
+
+        public static ClientID AdaugareContInvestitii(ClientID client)
+        {
+            if (client.GetContInvestitii() != null)
+            {
+                Console.WriteLine($"Clientul cu ID-ul {client.GetID()} are deja cont de Investitii.");
+                return client;
+            }
+            if (client.GetContEconomii() == null)
+            {
+                Console.WriteLine("Introduceti numarul contului de investitii al clientului");
+                string numarContInvestitii = Console.ReadLine();
+                Console.WriteLine("Introduceti suma din contul de investitii al clientului");
+                int valoareMonetaraInvestitii = int.Parse(Console.ReadLine());
+                Console.WriteLine("Introduceti data in care veti putea sa faceti retragere in format zz/LL/aaaa");
+                string dataRetragere = Console.ReadLine();
+                Investitii contInvestitii = new Investitii(numarContInvestitii, valoareMonetaraInvestitii, dataRetragere);
+                client = new ClientID(client.GetID(), client.GetContCurent(), contInvestitii);
+            }
+            else
+            {
+                Console.WriteLine("Introduceti numarul contului de investitii al clientului");
+                string numarContInvestitii = Console.ReadLine();
+                Console.WriteLine("Introduceti suma din contul de investitii al clientului");
+                int valoareMonetaraInvestitii = int.Parse(Console.ReadLine());
+                Console.WriteLine("Introduceti data in care veti putea sa faceti retragere in format zz/LL/aaaa");
+                string dataRetragere = Console.ReadLine();
+                Investitii contInvestitii = new Investitii(numarContInvestitii, valoareMonetaraInvestitii, dataRetragere);
+                client = new ClientID(client.GetID(), client.GetContCurent(), client.GetContEconomii(), contInvestitii);
+            }
+            Console.WriteLine($"Pentru clientul cu ID-ul {client.GetID()} a fost adaugat un cont de investitii!");
+            return client;
+        }
+        public static ClientID AdaugareContEconomii(ClientID client)
+        {
+            if (client.GetContEconomii() != null)
+            {
+                Console.WriteLine($"Clientul cu ID-ul {client.GetID()} are deja cont de Economii.");
+                return client;
+            }
+            if (client.GetContInvestitii() == null)
+            {
+                Console.WriteLine("Introduceti numarul contului de economii al clientului");
+                string numarContEconomii = Console.ReadLine();
+                Console.WriteLine("Introduceti suma din contul de economii al clientului");
+                int valoareMonetaraEconomii = int.Parse(Console.ReadLine());
+                Economii contEconomii = new Economii(numarContEconomii, valoareMonetaraEconomii);
+                client = new ClientID(client.GetID(), client.GetContCurent(), contEconomii);
+            }
+            else
+            {
+                Console.WriteLine("Introduceti numarul contului de economii al clientului");
+                string numarContEconomii = Console.ReadLine();
+                Console.WriteLine("Introduceti suma din contul de economii al clientului");
+                int valoareMonetaraEconomii = int.Parse(Console.ReadLine());
+                Economii contEconomii = new Economii(numarContEconomii, valoareMonetaraEconomii);
+                client = new ClientID(client.GetID(), client.GetContCurent(), contEconomii, client.GetContInvestitii());
+            }
+            Console.WriteLine($"Pentru clientul cu ID-ul {client.GetID()} a fost adaugat un cont de economii!");
+            return client;
         }
     }
 }

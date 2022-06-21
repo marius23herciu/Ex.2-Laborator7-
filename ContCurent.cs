@@ -27,12 +27,28 @@ namespace Ex._2_Laborator7_
             return this.valoareMonetara;
         }
         /// <summary>
-        /// Seteaza valoarea contului curent.
+        /// Depune in cont curent.
         /// </summary>
         /// <param name="modificare"></param>
-        public void SetValoareMonetara(double modificare)
+        public void DepunereContCurent()
         {
-            this.valoareMonetara += modificare;
+            int plus = int.Parse(Console.ReadLine());
+            this.valoareMonetara += plus;
+        }
+        /// <summary>
+        /// Extrage bani din cont curent.
+        /// </summary>
+        public void RetragereContCurent()
+        {
+            int minus = int.Parse(Console.ReadLine());
+            if (this.valoareMonetara >= minus)
+            {
+                this.valoareMonetara -= minus;
+            }
+            else
+            {
+                Console.WriteLine($"Fonduri insuficiente!");
+            }
         }
         /// <summary>
         /// Afiseaza valoarea contului curent.
@@ -40,17 +56,6 @@ namespace Ex._2_Laborator7_
         public void Afisare()
         {
             Console.WriteLine($"{this.valoareMonetara}");
-        }
-        /// <summary>
-        /// Returneaza ContCurent.
-        /// </summary>
-        /// <returns></returns>
-        public ContCurent GetContCurentOrigin()
-        {
-            string numarCont = this.numarCont;
-            double valoareMonetara = this.valoareMonetara;
-            ContCurent contCurent = new ContCurent(numarCont, valoareMonetara);
-            return contCurent;
         }
     }
 }

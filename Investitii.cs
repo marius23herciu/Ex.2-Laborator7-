@@ -30,12 +30,44 @@ namespace Ex._2_Laborator7_
             return this.valoareMonetara;
         }
         /// <summary>
-        /// Seteaza soldul de investitii.
+        /// Depune numerar in soldul contului de investitii.
         /// </summary>
         /// <param name="adaugare"></param>
-        public void SetValoareMonetara(double adaugare)
+        public void DepunereValoareMonetara()
         {
-            this.valoareMonetara += adaugare;
+            int plus = int.Parse(Console.ReadLine());
+            this.valoareMonetara += plus;
+            Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+        }
+        /// <summary>
+        /// Retrage numerar din contul de investitii.
+        /// </summary>
+        public void RetragererValoareMonetara()
+        {
+            int minus = int.Parse(Console.ReadLine());
+            if (this.valoareMonetara >= minus)
+            {
+                this.valoareMonetara -= minus;
+                Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+            }
+            else
+            {
+                Console.WriteLine($"Fonduri insuficiente!");
+            }
+        }
+        /// <summary>
+        /// Verifica daca data de retragere a fost atinsa.
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckDataRetragere()
+        {
+            bool termenAtins = false;
+            DateTime dataRetragere = DateTime.ParseExact(this.dataRetragere, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            if (dataRetragere <= DateTime.Today)
+            {
+                termenAtins = true;
+            }
+            return termenAtins;
         }
         /// <summary>
         /// Dobanda dobanda.
@@ -44,17 +76,6 @@ namespace Ex._2_Laborator7_
         public double GetDobanda()
         {
             return this.valoareMonetara * 0.05;
-        }
-        /// <summary>
-        /// Returneaza obiectul Investitii.
-        /// </summary>
-        /// <returns></returns>
-        public Investitii GetContInvestitiiOrigin()
-        {
-            string numarCont = this.numarCont;
-            double valoareMonetara = this.valoareMonetara;
-            Investitii contInvestitii = new Investitii(numarCont, valoareMonetara, dataRetragere);
-            return contInvestitii;
         }
         /// <summary>
         /// Returneaza data de retragere pentru contul de investitii.

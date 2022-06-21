@@ -27,13 +27,32 @@ namespace Ex._2_Laborator7_
             return this.valoareMonetara;
         }
         /// <summary>
-        /// Seteaza soldul contului de economii.
+        /// Depune numerar in soldul contului de economii.
         /// </summary>
         /// <param name="adaugare"></param>
-        public void SetValoareMonetara(double adaugare)
+        public void DepunereValoareMonetara()
         {
-            this.valoareMonetara += adaugare;
+            int plus = int.Parse(Console.ReadLine());
+            this.valoareMonetara += plus;
+            Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
         }
+        /// <summary>
+        /// Retrage numerar din contul de economii.
+        /// </summary>
+        public void RetragererValoareMonetara()
+        {
+            int minus = int.Parse(Console.ReadLine());
+            if (this.valoareMonetara >= minus)
+            {
+                this.valoareMonetara -= minus;
+                Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+            }
+            else
+            {
+                Console.WriteLine($"Fonduri insuficiente!");
+            }
+        }
+
         /// <summary>
         /// Returneaza dobanda.
         /// </summary>
@@ -41,17 +60,6 @@ namespace Ex._2_Laborator7_
         public double GetDobanda()
         {
             return this.valoareMonetara * 0.05;
-        }
-        /// <summary>
-        /// Returneaza obiectul Economii.
-        /// </summary>
-        /// <returns></returns>
-        public Economii GetContEconomiiOrigin()
-        {
-            string numarCont = this.numarCont;
-            double valoareMonetara = this.valoareMonetara;
-            Economii contEconomii = new Economii(numarCont, valoareMonetara);
-            return contEconomii;
         }
         /// <summary>
         /// Afiseaza soldul contului de economii.

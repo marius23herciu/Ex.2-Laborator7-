@@ -10,7 +10,6 @@ namespace Ex._2_Laborator7_
         private ContCurent contCurent;
         private Economii contEconomii;
         private Investitii contInvestitii;
-        private int numerotareConturi = 0;
         /// <summary>
         /// Creaza ID-ul Clientului si Contul Curent.
         /// </summary>
@@ -20,7 +19,6 @@ namespace Ex._2_Laborator7_
         {
             this.clientID = clientID;
             this.contCurent = contCurent;
-            this.numerotareConturi = 1;
         }
         /// <summary>
         /// Creaza ID-ul Clientului, Contul Curent si Contul de Economii.
@@ -33,7 +31,18 @@ namespace Ex._2_Laborator7_
             this.clientID = clientID;
             this.contCurent = contCurent;
             this.contEconomii = contEtconomii;
-            this.numerotareConturi = 2;
+        }
+        /// <summary>
+        /// Creaza ID-ul Clientului, Contul Curent si Contul de Investitii.
+        /// </summary>
+        /// <param name="clientID"></param>
+        /// <param name="contCurent"></param>
+        /// <param name="contInvestitii"></param>
+        public ClientID(string clientID, ContCurent contCurent, Investitii contInvestitii)
+        {
+            this.clientID = clientID;
+            this.contCurent = contCurent;
+            this.contInvestitii = contInvestitii;
         }
         /// <summary>
         /// Creaza ID-ul Clientului, Contul Curent, Contul de Economii si Contul de Investitii.
@@ -48,15 +57,6 @@ namespace Ex._2_Laborator7_
             this.contCurent = contCurent;
             this.contEconomii = contEtconomii;
             this.contInvestitii = contInvestitii;
-            this.numerotareConturi = 3;
-        }
-        /// <summary>
-        /// Returneaza numarul de conturi existente pentru ClientID.
-        /// </summary>
-        /// <returns></returns>
-        public int GetNumarConturi()
-        {
-            return this.numerotareConturi;
         }
         /// <summary>
         /// Returneaza Cont Curent.
@@ -64,7 +64,7 @@ namespace Ex._2_Laborator7_
         /// <returns></returns>
         public ContCurent GetContCurent()
         {
-            return contCurent.GetContCurentOrigin();
+            return this.contCurent;
         }
         /// <summary>
         /// Returneaza Cont Economii.
@@ -72,7 +72,7 @@ namespace Ex._2_Laborator7_
         /// <returns></returns>
         public Economii GetContEconomii()
         {
-            return contEconomii.GetContEconomiiOrigin();
+            return this.contEconomii;
         }
         /// <summary>
         /// Returneaza Cont Investitii
@@ -80,7 +80,7 @@ namespace Ex._2_Laborator7_
         /// <returns></returns>
         public Investitii GetContInvestitii()
         {
-            return contInvestitii.GetContInvestitiiOrigin();
+            return this.contInvestitii;
         }
         /// <summary>
         /// Returneaza ID-ul clientului.
