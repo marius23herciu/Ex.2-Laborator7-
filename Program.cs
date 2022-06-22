@@ -57,6 +57,21 @@ namespace Ex._2_Laborator7_
             {
                 client = AdaugareContEconomii(client);
             }
+
+            var primaZiALunii = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            if (DateTime.Today == primaZiALunii)
+            {
+                if (client.GetContEconomii()!=null)
+                {
+                    client.GetContEconomii().RecalculareSold();
+                    Console.WriteLine($"Astazi a fost adaugata dobanda in contul de economii. Noua valoare este {client.GetContEconomii().GetSoldEconomii()}");
+                }
+                if (client.GetContInvestitii()!=null)
+                {
+                    client.GetContInvestitii().RecalculareSold();
+                    Console.WriteLine($"Astazi a fost adaugata dobanda in contul de investitii. Noua valoare este {client.GetContInvestitii().GetSoldInvestitii()}");
+                }
+            }
         }
 
         public static ClientID ModificariConturi(ClientID client)
@@ -91,11 +106,11 @@ namespace Ex._2_Laborator7_
 
                     if (client.GetContInvestitii() != null)
                     {
-                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare);
+                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare, client.GetContInvestitii());
                     }
                     if (client.GetContInvestitii() == null)
                     {
-                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare, client.GetContInvestitii());
+                        client = new ClientID(client.GetID(), client.GetContCurent(), contEconomiiModificare);
                     }
                 }
             }
@@ -247,7 +262,6 @@ namespace Ex._2_Laborator7_
                     {
                         Console.WriteLine();
                         Console.WriteLine($"Veti putea retrage bani din contul de investitii incepand cu data de {contInvestitii.GetDataRetragere()}");
-                        Console.WriteLine($"Dobanda este {contInvestitii.GetDobanda()}.");
                     }
                 }
             }

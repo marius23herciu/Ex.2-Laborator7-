@@ -34,7 +34,7 @@ namespace Ex._2_Laborator7_
         {
             int plus = int.Parse(Console.ReadLine());
             this.valoareMonetara += plus;
-            Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+            Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
         }
         /// <summary>
         /// Retrage numerar din contul de economii.
@@ -45,21 +45,19 @@ namespace Ex._2_Laborator7_
             if (this.valoareMonetara >= minus)
             {
                 this.valoareMonetara -= minus;
-                Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+                Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara*0.005}.");
             }
             else
             {
                 Console.WriteLine($"Fonduri insuficiente!");
             }
         }
-
         /// <summary>
-        /// Returneaza dobanda.
+        /// Adauga dobanda soldului din contul de economii.
         /// </summary>
-        /// <returns></returns>
-        public double GetDobanda()
+        public void RecalculareSold()
         {
-            return this.valoareMonetara * 0.05;
+            this.valoareMonetara += this.valoareMonetara * 0.005;
         }
         /// <summary>
         /// Afiseaza soldul contului de economii.

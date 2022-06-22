@@ -37,7 +37,7 @@ namespace Ex._2_Laborator7_
         {
             int plus = int.Parse(Console.ReadLine());
             this.valoareMonetara += plus;
-            Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+            Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
         }
         /// <summary>
         /// Retrage numerar din contul de investitii.
@@ -48,7 +48,7 @@ namespace Ex._2_Laborator7_
             if (this.valoareMonetara >= minus)
             {
                 this.valoareMonetara -= minus;
-                Console.WriteLine($"Noua dobanda este {GetDobanda()}.");
+                Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
             }
             else
             {
@@ -70,12 +70,11 @@ namespace Ex._2_Laborator7_
             return termenAtins;
         }
         /// <summary>
-        /// Dobanda dobanda.
+        /// Adauga dobanda soldului din contul de investitii.
         /// </summary>
-        /// <returns></returns>
-        public double GetDobanda()
+        public void RecalculareSold()
         {
-            return this.valoareMonetara * 0.05;
+            this.valoareMonetara += this.valoareMonetara * 0.005;
         }
         /// <summary>
         /// Returneaza data de retragere pentru contul de investitii.
