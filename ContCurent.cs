@@ -38,17 +38,19 @@ namespace Ex._2_Laborator7_
         /// <summary>
         /// Extrage bani din cont curent.
         /// </summary>
-        public void RetragereContCurent()
+        public int RetragereContCurent()
         {
             int minus = int.Parse(Console.ReadLine());
             if (this.valoareMonetara >= minus)
             {
                 this.valoareMonetara -= minus;
+                return minus;
             }
             else
             {
                 Console.WriteLine($"Fonduri insuficiente!");
             }
+            return 0;
         }
         /// <summary>
         /// Afiseaza valoarea contului curent.

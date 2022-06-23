@@ -34,30 +34,32 @@ namespace Ex._2_Laborator7_
         {
             int plus = int.Parse(Console.ReadLine());
             this.valoareMonetara += plus;
-            Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
         }
         /// <summary>
         /// Retrage numerar din contul de economii.
         /// </summary>
-        public void RetragererValoareMonetara()
+        public int RetragererValoareMonetara()
         {
             int minus = int.Parse(Console.ReadLine());
             if (this.valoareMonetara >= minus)
             {
                 this.valoareMonetara -= minus;
-                Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara*0.005}.");
+                return minus;
             }
             else
             {
                 Console.WriteLine($"Fonduri insuficiente!");
             }
+            return 0;
         }
         /// <summary>
-        /// Adauga dobanda soldului din contul de economii.
+        /// Recalculeaza si adauga dobanda soldului din contul de economii.
         /// </summary>
         public void RecalculareSold()
         {
-            this.valoareMonetara += this.valoareMonetara * 0.005;
+            double dobanda = this.valoareMonetara * 0.005;
+            this.valoareMonetara += dobanda;
+            Console.WriteLine($"Dobanda adaugata este {dobanda}.");
         }
         /// <summary>
         /// Afiseaza soldul contului de economii.

@@ -37,23 +37,31 @@ namespace Ex._2_Laborator7_
         {
             int plus = int.Parse(Console.ReadLine());
             this.valoareMonetara += plus;
-            Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
         }
         /// <summary>
         /// Retrage numerar din contul de investitii.
         /// </summary>
-        public void RetragererValoareMonetara()
+        public int RetragererValoareMonetara()
         {
             int minus = int.Parse(Console.ReadLine());
-            if (this.valoareMonetara >= minus)
+            if (CheckDataRetragere() == true)
             {
-                this.valoareMonetara -= minus;
-                Console.WriteLine($"Noua dobanda lunara este {this.valoareMonetara * 0.005}.");
+                if (this.valoareMonetara >= minus)
+                {
+                    this.valoareMonetara -= minus;
+                    return minus;
+                }
+                else
+                {
+                    Console.WriteLine($"Fonduri insuficiente!");
+                }
             }
             else
             {
-                Console.WriteLine($"Fonduri insuficiente!");
+                Console.WriteLine();
+                Console.WriteLine($"Veti putea retrage bani din contul de investitii incepand cu data de {GetDataRetragere()}");
             }
+            return 0;
         }
         /// <summary>
         /// Verifica daca data de retragere a fost atinsa.
@@ -70,11 +78,13 @@ namespace Ex._2_Laborator7_
             return termenAtins;
         }
         /// <summary>
-        /// Adauga dobanda soldului din contul de investitii.
+        /// Recalculeaza si adauga dobanda soldului din contul de investitii.
         /// </summary>
         public void RecalculareSold()
         {
-            this.valoareMonetara += this.valoareMonetara * 0.005;
+            double dobanda = this.valoareMonetara * 0.005;
+            this.valoareMonetara += dobanda;
+            Console.WriteLine($"Dobanda adaugata este {dobanda}.");
         }
         /// <summary>
         /// Returneaza data de retragere pentru contul de investitii.

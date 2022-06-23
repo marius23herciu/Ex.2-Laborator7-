@@ -58,20 +58,7 @@ namespace Ex._2_Laborator7_
                 client = AdaugareContEconomii(client);
             }
 
-            var primaZiALunii = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-            if (DateTime.Today == primaZiALunii)
-            {
-                if (client.GetContEconomii()!=null)
-                {
-                    client.GetContEconomii().RecalculareSold();
-                    Console.WriteLine($"Astazi a fost adaugata dobanda in contul de economii. Noua valoare este {client.GetContEconomii().GetSoldEconomii()}");
-                }
-                if (client.GetContInvestitii()!=null)
-                {
-                    client.GetContInvestitii().RecalculareSold();
-                    Console.WriteLine($"Astazi a fost adaugata dobanda in contul de investitii. Noua valoare este {client.GetContInvestitii().GetSoldInvestitii()}");
-                }
-            }
+
         }
 
         public static ClientID ModificariConturi(ClientID client)
@@ -227,6 +214,14 @@ namespace Ex._2_Laborator7_
                 }
             }
             Console.WriteLine();
+            Console.WriteLine("Doriti sa recalculati dobanda contului de economii ? y/n ");
+            raspuns = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if (raspuns == 'y')
+            {
+                contEconomii.RecalculareSold();
+            }
+            Console.WriteLine();
             Console.WriteLine("Valoarea actuala a contului de economii: ");
             contEconomii.Afisare();
             return contEconomii;
@@ -250,20 +245,20 @@ namespace Ex._2_Laborator7_
                 raspuns = Console.ReadKey().KeyChar;
                 if (raspuns == 'y')
                 {
-                    if (contInvestitii.CheckDataRetragere() == true)
-                    {
-                        Console.WriteLine();
-                        Console.Write($"Puteti retrage maxim ");
-                        Console.WriteLine(contInvestitii.GetSoldInvestitii());
-                        Console.WriteLine("Introduceti suma pe care doriti sa o retrageti: ");
-                        contInvestitii.RetragererValoareMonetara();
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"Veti putea retrage bani din contul de investitii incepand cu data de {contInvestitii.GetDataRetragere()}");
-                    }
+                    Console.WriteLine();
+                    Console.Write($"Puteti retrage maxim ");
+                    Console.WriteLine(contInvestitii.GetSoldInvestitii());
+                    Console.WriteLine("Introduceti suma pe care doriti sa o retrageti: ");
+                    contInvestitii.RetragererValoareMonetara();
                 }
+            }
+            Console.WriteLine();
+            Console.WriteLine("Doriti sa recalculati dobanda contului de investitii ? y/n ");
+            raspuns = Console.ReadKey().KeyChar;
+            Console.WriteLine();
+            if (raspuns == 'y')
+            {
+                contInvestitii.RecalculareSold();
             }
             Console.WriteLine();
             Console.WriteLine("Valoarea actuala a contului de Investitii: ");
